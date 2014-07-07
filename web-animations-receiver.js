@@ -1,7 +1,7 @@
 (function() {
 
   var imported = document.createElement('script');
-  imported.src = 'https://rawgit.com/web-animations/web-animations-js/master/web-animations.js';
+  imported.src = 'web-animations.js';
   document.head.appendChild(imported);
   var ASSERT_ENABLED = false;
   var SVG_NS = 'http://www.w3.org/2000/svg';
@@ -26,23 +26,20 @@
   };
 
   ProxyPlayer.prototype = {
-    clone: function() {
-      return new ProxyPlayer(this.elemID, this.animEffect, this.timingDict, this.worker);
-    },
     execute: function(val) {
-      if (val == "animate") {
+      if (val == 'animate') {
         if (this.player == null) {
           this.player = document.timeline.play(this.anim);
         } else {
           this.player.play();
         }
-      } else if (val == "pause") {
+      } else if (val == 'pause') {
         this.player.pause();
-      } else if (val == "reverse") {
+      } else if (val == 'reverse') {
         this.player.reverse();
-      } else if (val == "finish") {
+      } else if (val == 'finish') {
         this.player.finish();
-      } else if (val == "cancel") {
+      } else if (val == 'cancel') {
         this.player.cancel();
       }
     }
@@ -77,7 +74,7 @@
 
     worker.onmessage = function(oEvent) {
       elementList.execute(oEvent.data, worker);
-    }
+    };
     return worker;
   }
 

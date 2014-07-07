@@ -6,11 +6,11 @@
   /** @constructor */
   var AnimatableElement = function(id, worker) {
     try {
-      var tag = "#";
+      var tag = '#';
       if (id.indexOf(tag) > -1) {
         this._id = id;
-      } else{
-        this._id = "#" + id;
+      } else {
+        this._id = '#' + id;
       }
       this._worker = worker;
     } finally {
@@ -24,21 +24,21 @@
       return this._id;
     },
     set id(val) {
-      var tag = "#";
+      var tag = '#';
       if (s.indexOf(tag) > -1) {
         this._id = val;
-      } else{
-        this._id = "#" + val;
+      } else {
+        this._id = '#' + val;
       }
     },
     clone: function() {
       return new AnimatableElement(this.id, this.worker);
     },
     // accepts an animationEffect dictionary as well as a timingInput dictionary
-    animate: function(animationEffect, timingInput) {
-      this._animationEffect = animationEffect;
-      this._timingInput = timingInput;
-      this._worker.postMessage(["animate", this.id, animationEffect, timingInput]);
+    animate: function(animEffect, tInput) {
+      this._animationEffect = animEffect;
+      this._timingInput = tInput;
+      this._worker.postMessage(['animate', this.id, animEffect, tInput]);
       return new AnimationPlayer(this._id, this._worker);
     }
   };
@@ -62,21 +62,21 @@
     set worker(val) {
       this._worker = val;
     },
-    pause: function () {
-      this._worker.postMessage(["pause", this.id]);
+    pause: function() {
+      this._worker.postMessage(['pause', this.id]);
     },
-    play: function () {
-      this._worker.postMessage(["play", this.id]);
+    play: function() {
+      this._worker.postMessage(['play', this.id]);
     },
-    cancel: function () {
-      this._worker.postMessage(["cancel", this.id]);
+    cancel: function() {
+      this._worker.postMessage(['cancel', this.id]);
     },
-    finish: function () {
-      this._worker.postMessage(["finish", this.id]);
+    finish: function() {
+      this._worker.postMessage(['finish', this.id]);
     },
-    reverse: function () {
-      this._worker.postMessage(["reverse", this.id]);
-    },
+    reverse: function() {
+      this._worker.postMessage(['reverse', this.id]);
+    }
   };
 
 
