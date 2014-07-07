@@ -1,6 +1,3 @@
-importScripts('worker-side.js')
-
-// create the animatable element
 var testobj = new AnimatableElement("#myCanvas1", self);
 var player;
 

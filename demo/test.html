@@ -8,18 +8,11 @@
 				position: relative;
 			}
 		</style>
-		<script src="thread-side.js"></script>
+		<script src="web-animations-receiver.js"></script>
 		<script type="text/javascript">
-			var testobj1 = new ListOfElements();
-			worker1 = new Worker('work.js');
-			worker1.onmessage = function (oEvent) {
-				testobj1.execute(oEvent.data, worker1);				
-			};
-			
-			worker2 = new Worker('work1.js');
-			worker2.onmessage = function (oEvent) {
-				testobj1.execute(oEvent.data, worker2);				
-			};
+			var worker1 = createAnimationWorker('work.js');
+			var worker2 = createAnimationWorker('work1.js');
+
 			play = function() {
 				worker1.postMessage("start");
 				worker2.postMessage("start");
@@ -31,11 +24,11 @@
 
 		</script>
 	</head>
+
 	<body>
 		<button id = "play" onClick = "play()">Play</button>
 		<button id = "pause" onClick = "pause()">Pause</button>
 		<br>
-		It Moves! And stops!
 		<br>
 		<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
 		</canvas>
