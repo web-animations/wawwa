@@ -18,13 +18,13 @@ var userOnMessageHandler = undefined;
 importScripts('web-animations-worker.js');
 
 self.onmessage = function(event) {
-  if (event.data[0] == 'requestAnimationFrame') {
+  if (event.data[0] === 'requestAnimationFrame') {
     var oldRAFs = window.pendingRAFList;
     window.pendingRAFList = [];
     oldRAFs.forEach(function(raf) {
       raf(event.data[1]);
     });
-  } else if (event.data[0] == 'name') {
+  } else if (event.data[0] === 'name') {
     importScripts(event.data[1]);
   } else if (userOnMessageHandler !== undefined) {
     userOnMessageHandler(event);

@@ -4,9 +4,6 @@
 			#myCanvas, #myCanvas1 {
 				position: relative;
 			}
-			#hello {
-				position: relative;
-			}
 		</style>
 		<script src="web-animations-receiver.js"></script>
 		<script type="text/javascript">
@@ -16,7 +13,7 @@
 			var worker2 = createAnimationWorker('work1.js');
 
 			toggle = function() {
-				if (state =="pause") {
+				if (state ==="pause") {
 					document.querySelector("#play").innerText = "Pause";
 					worker1.postMessage('start');
 					worker2.postMessage('start');

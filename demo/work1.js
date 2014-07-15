@@ -20,9 +20,9 @@ var player;
 self.onmessage = function(e) {
   // call animate on it
   var motion = [{left: '0px'}, {left: '300px'}];
-  if (e.data == 'start') {
+  if (e.data === 'start') {
     player = testobj.animate(motion, {duration: 2000, iterations: Infinity});
-  } else if (e.data == 'pause') {
+  } else if (e.data === 'pause') {
     player.pause();
   }
 

@@ -41,19 +41,19 @@
 
   ProxyPlayer.prototype = {
     execute: function(val) {
-      if (val == 'animate_element') {
-        if (this.player == null) {
+      if (val === 'animate_element') {
+        if (this.player === null) {
           this.player = document.timeline.play(this.anim);
         } else {
           this.player.play();
         }
-      } else if (val == 'pause_element') {
+      } else if (val === 'pause_element') {
         this.player.pause();
-      } else if (val == 'reverse_element') {
+      } else if (val === 'reverse_element') {
         this.player.reverse();
-      } else if (val == 'finish_element') {
+      } else if (val === 'finish_element') {
         this.player.finish();
-      } else if (val == 'cancel_element') {
+      } else if (val === 'cancel_element') {
         this.player.cancel();
       }
     }
@@ -83,6 +83,7 @@
 
   var elementList = new ListOfElements();
 
+  // creates the Web Worker here using a shim
   function createAnimationWorker(name) {
     var worker = new Worker('shim.js');
     elementList.workers[name] = worker;

@@ -24,10 +24,10 @@ var motion = [{left: '0px'}, {left: '1000px'}];
 // var motion1 = [{left: '0px'}, {left: '300px'}];
 
 self.onmessage = function(e) {
-  if (e.data == 'start') {
+  if (e.data === 'start') {
     player = testobj.animate(motion, {duration: 2000, iterations: Infinity});
     // player1 = testobj1.animate(motion1, {duration: 2000, iterations: 10});
-  } else if (e.data == 'pause') {
+  } else if (e.data === 'pause') {
     player.pause();
     // player1.pause();
   }
