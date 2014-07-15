@@ -41,19 +41,19 @@
 
   ProxyPlayer.prototype = {
     execute: function(val) {
-      if (val == 'animate') {
+      if (val == 'animate_element') {
         if (this.player == null) {
           this.player = document.timeline.play(this.anim);
         } else {
           this.player.play();
         }
-      } else if (val == 'pause') {
+      } else if (val == 'pause_element') {
         this.player.pause();
-      } else if (val == 'reverse') {
+      } else if (val == 'reverse_element') {
         this.player.reverse();
-      } else if (val == 'finish') {
+      } else if (val == 'finish_element') {
         this.player.finish();
-      } else if (val == 'cancel') {
+      } else if (val == 'cancel_element') {
         this.player.cancel();
       }
     }
@@ -62,6 +62,7 @@
   /** @constructor */
   var ListOfElements = function() {
     this.dict = {};
+    this.workers = {};
   };
 
   ListOfElements.prototype = {
@@ -84,20 +85,24 @@
 
   function createAnimationWorker(name) {
     var worker = new Worker('shim.js');
-    worker.postMessage(['config', name]);
-
+    elementList.workers[name] = worker;
+    worker.postMessage(['name', name]);
     worker.onmessage = function(oEvent) {
       elementList.execute(oEvent.data, worker);
     };
     return worker;
   }
 
-  // functions adapted from the original Web Animations polyfill
+  function ticker(t) {
+    for (var elem in elementList.workers) {
+      elementList.workers[elem].postMessage(['requestAnimationFrame', t]);
+    }
+    requestAnimationFrame(ticker);
+  }
+
   window.ProxyPlayer = ProxyPlayer;
   window.ListOfElements = ListOfElements;
   window.createAnimationWorker = createAnimationWorker;
-
+  window.ticker = ticker;
 
 })();
-
-
