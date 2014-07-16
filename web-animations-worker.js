@@ -15,7 +15,6 @@
  */
 
 (function() {
-
   /** @constructor */
   var AnimatableElement = function(id, worker) {
     try {
@@ -33,6 +32,7 @@
   };
 
   AnimatableElement.prototype = {
+    // getters and setters
     get id() {
       return this._id;
     },
@@ -44,25 +44,29 @@
         this._id = '#' + val;
       }
     },
+    // clone the current animatable element
     clone: function() {
       return new AnimatableElement(this.id, this.worker);
     },
-    // accepts an animationEffect dictionary as well as a timingInput dictionary
+    // accepts an animationEffect dictionary as well as a timingInput dictionary to create an animation
+    // returns an instance of a proxy AnimationPlayer
     animate: function(animEffect, tInput) {
       this._animationEffect = animEffect;
       this._timingInput = tInput;
-      this._worker.postMessage(['animate', this.id, animEffect, tInput]);
-      return new AnimationPlayer(this._id, this._worker);
+      this._worker.postMessage(['animate_element', this.id, animEffect, tInput]);
+      return new AnimationPlayer(this._id, this._worker, this._elem);
     }
   };
 
   /** @constructor */
-  var AnimationPlayer = function(id, worker) {
+  var AnimationPlayer = function(id, worker, elem) {
     this._id = id;
     this._worker = worker;
+    this._elem = elem;
   };
 
   AnimationPlayer.prototype = {
+    // getters and setters
     get id() {
       return this._id;
     },
@@ -75,26 +79,44 @@
     set worker(val) {
       this._worker = val;
     },
+    get elem() {
+      return this._elem;
+    },
+    set elem(val) {
+      this._elem = val;
+    },
+    // the following functions moce to perform the action stated by their name
     pause: function() {
-      this._worker.postMessage(['pause', this.id]);
+      this._worker.postMessage(['pause_element', this.id]);
     },
     play: function() {
-      this._worker.postMessage(['play', this.id]);
+      this._worker.postMessage(['play_element', this.id]);
     },
     cancel: function() {
-      this._worker.postMessage(['cancel', this.id]);
+      this._worker.postMessage(['cancel_element', this.id]);
     },
     finish: function() {
-      this._worker.postMessage(['finish', this.id]);
+      this._worker.postMessage(['finish_element', this.id]);
     },
     reverse: function() {
-      this._worker.postMessage(['reverse', this.id]);
+      this._worker.postMessage(['reverse_element', this.id]);
     }
   };
 
+  /** @constructor */
+  var Window = function(worker) {
+    this._worker = worker;
+    this.pendingRAFList = [];
+  };
 
-  // functions adapted from the original Web Animations polyfill
+  Window.prototype = {
+    requestAnimationFrame: function(callback) {
+      this.pendingRAFList.push(callback);
+    }
+  };
+
   self.AnimatableElement = AnimatableElement;
   self.AnimationPlayer = AnimationPlayer;
+  self.window = new Window();
 
 })();

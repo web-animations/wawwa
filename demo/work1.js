@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-var userOnMessageHandler = undefined;
-importScripts('web-animations-worker.js');
+var testobj = new AnimatableElement('#myCanvas2', self);
+var player;
 
-self.onmessage = function(event) {
-  if (event.data[0] === 'requestAnimationFrame') {
-    var oldRAFs = window.pendingRAFList;
-    window.pendingRAFList = [];
-    oldRAFs.forEach(function(raf) {
-      raf(event.data[1]);
-    });
-  } else if (event.data[0] === 'name') {
-    importScripts(event.data[1]);
-  } else if (userOnMessageHandler !== undefined) {
-    userOnMessageHandler(event);
+self.onmessage = function(e) {
+  // call animate on it
+  var motion = [{left: '0px'}, {left: '300px'}];
+  if (e.data === 'start') {
+    player = testobj.animate(motion, {duration: 2000, iterations: Infinity});
+  } else if (e.data === 'pause') {
+    player.pause();
   }
-};
 
-Object.defineProperty(self, 'onmessage', {
-  get: function() { return userOnMessageHandler; },
-  set: function(f) { userOnMessageHandler = f; }
-});
+  // testing the tick value at both ends
+  function tick(t) {
+	console.log('worker1 at time ' + t);
+    window.requestAnimationFrame(tick);
+  }
+
+  window.requestAnimationFrame(tick);
+
+};
