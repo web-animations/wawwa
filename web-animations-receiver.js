@@ -62,10 +62,18 @@
   /** @constructor */
   var ListOfElements = function() {
     this.dict = {};
-    this.workers = {};
-  };
+    this.workers = {}; 
+    this.ticker(0);
+ };
 
   ListOfElements.prototype = {
+    ticker: function (t) {
+      for (var elem in this.workers) {
+        console.log(t);
+        this.workers[elem].postMessage(['requestAnimationFrame', t]);
+      }
+      requestAnimationFrame(this.ticker.bind(this));      
+    },
     find: function(val) {
       return this.dict[val];
     },
@@ -94,16 +102,8 @@
     return worker;
   }
 
-  function ticker(t) {
-    for (var elem in elementList.workers) {
-      elementList.workers[elem].postMessage(['requestAnimationFrame', t]);
-    }
-    requestAnimationFrame(ticker);
-  }
-
   window.ProxyPlayer = ProxyPlayer;
   window.ListOfElements = ListOfElements;
   window.createAnimationWorker = createAnimationWorker;
-  window.ticker = ticker;
 
 })();
