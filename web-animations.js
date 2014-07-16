@@ -5479,7 +5479,7 @@ var ticker = function(rafTime, isRepeat) {
     if (rafTime < lastClockTimeMillis) {
       rafTime = lastClockTimeMillis;
     }
-    lastTickTime  = rafTime;
+    lastTickTime = rafTime;
     cachedClockTimeMillis = rafTime;
   }
 

@@ -17,19 +17,13 @@
 var testobj = new AnimatableElement('#myCanvas1', self);
 var player;
 
-// var testobj1 = new AnimatableElement('#myCanvas2', self);
-// var player1;
-
 var motion = [{left: '0px'}, {left: '1000px'}];
-// var motion1 = [{left: '0px'}, {left: '300px'}];
 
 self.onmessage = function(e) {
   if (e.data === 'start') {
     player = testobj.animate(motion, {duration: 2000, iterations: Infinity});
-    // player1 = testobj1.animate(motion1, {duration: 2000, iterations: 10});
   } else if (e.data === 'pause') {
     player.pause();
-    // player1.pause();
   }
 
   // testing the tick value at both ends
