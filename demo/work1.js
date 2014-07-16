@@ -28,7 +28,7 @@ self.onmessage = function(e) {
 
   // testing the tick value at both ends
   function tick(t) {
-    console.log('worker1 at time ' + t);
+	console.log('worker1 at time ' + t);
     window.requestAnimationFrame(tick);
   }
 

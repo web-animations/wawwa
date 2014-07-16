@@ -32,6 +32,7 @@
   };
 
   AnimatableElement.prototype = {
+    // getters and setters
     get id() {
       return this._id;
     },
@@ -43,10 +44,12 @@
         this._id = '#' + val;
       }
     },
+    // clone the current animatable element
     clone: function() {
       return new AnimatableElement(this.id, this.worker);
     },
-    // accepts an animationEffect dictionary as well as a timingInput dictionary
+    // accepts an animationEffect dictionary as well as a timingInput dictionary to create an animation
+    // returns an instance of a proxy AnimationPlayer
     animate: function(animEffect, tInput) {
       this._animationEffect = animEffect;
       this._timingInput = tInput;
@@ -63,6 +66,7 @@
   };
 
   AnimationPlayer.prototype = {
+    // getters and setters
     get id() {
       return this._id;
     },
@@ -81,6 +85,7 @@
     set elem(val) {
       this._elem = val;
     },
+    // the following functions moce to perform the action stated by their name
     pause: function() {
       this._worker.postMessage(['pause_element', this.id]);
     },

@@ -40,6 +40,7 @@
   };
 
   ProxyPlayer.prototype = {
+    // in each case performs the action as dictated by the string passed to it
     execute: function(val) {
       if (val === 'animate_element') {
         if (this.player === null) {
@@ -61,24 +62,31 @@
 
   /** @constructor */
   var ListOfElements = function() {
+    // create a singleton instance of global list of all workers and all ProxyPlayers
+    if ( ListOfElements.prototype._singletonInstance ) {
+      return ListOfElements.prototype._singletonInstance;
+    }
+    ListOfElements.prototype._singletonInstance = this;
     this.dict = {};
     this.workers = {}; 
     this.ticker(0);
  };
 
   ListOfElements.prototype = {
+    // ticker function
     ticker: function (t) {
       for (var elem in this.workers) {
-        console.log(t);
         this.workers[elem].postMessage(['requestAnimationFrame', t]);
       }
       requestAnimationFrame(this.ticker.bind(this));      
     },
-    find: function(val) {
+    // search in the dictioary of ProxyPlayers
+    findDict: function(val) {
       return this.dict[val];
     },
+    // execute the instruction as asked for by the worker
     execute: function(inputs, worker) {
-      var hold = this.find(inputs[1]);
+      var hold = this.findDict(inputs[1]);
       if (hold) {
         hold.execute(inputs[0]);
       } else {
@@ -91,7 +99,7 @@
 
   var elementList = new ListOfElements();
 
-  // creates the Web Worker here using a shim
+  // creates the Web Worker here using a shim and then executes the commands received
   function createAnimationWorker(name) {
     var worker = new Worker('shim.js');
     elementList.workers[name] = worker;
