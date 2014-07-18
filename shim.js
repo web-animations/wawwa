@@ -26,6 +26,8 @@ self.onmessage = function(event) {
     });
   } else if (event.data[0] === 'name') {
     importScripts(event.data[1]);
+  } else if (event.data[0] == 'report_time') {
+    window.elements[event.data[2]].currentTime = parseFloat(event.data[1]);
   } else if (userOnMessageHandler !== undefined) {
     userOnMessageHandler(event);
   }

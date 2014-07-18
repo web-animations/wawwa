@@ -15,6 +15,25 @@
  */
 
 (function() {
+
+  importScripts('web-animations-worker-copy.js');
+
+  /** @constructor */
+  var Window = function(worker) {
+    this._worker = worker;
+    this.pendingRAFList = [];
+    this.elements = {};
+  };
+
+  Window.prototype = {
+    requestAnimationFrame: function(callback) {
+      this.pendingRAFList.push(callback);
+    },
+    associate: function(anim, id) {
+      this.elementList[id].associate(anim);
+    }
+  };
+
   /** @constructor */
   var AnimatableElement = function(id, worker) {
     try {
@@ -48,13 +67,20 @@
     clone: function() {
       return new AnimatableElement(this.id, this.worker);
     },
-    // accepts an animationEffect dictionary as well as a timingInput dictionary to create an animation
+
+    // accepts an animationEffect dictionary as well as
+    // a timingInput dictionary to create an animation
     // returns an instance of a proxy AnimationPlayer
     animate: function(animEffect, tInput) {
+      // implement actual animation here
       this._animationEffect = animEffect;
       this._timingInput = tInput;
+      window.elements[this.id] = this;
+      // timing model
+      this.mockAnim = new Animation(null, null, tInput);
+      this.mockPlayer = self.document.timeline.play(this.mockAnim);
       this._worker.postMessage(['animate_element', this.id, animEffect, tInput]);
-      return new AnimationPlayer(this._id, this._worker, this._elem);
+      return new AnimationPlayer(this._id, this._worker, this);
     }
   };
 
@@ -87,31 +113,31 @@
     },
     // the following functions moce to perform the action stated by their name
     pause: function() {
+      this._elem.mockPlayer.pause();
       this._worker.postMessage(['pause_element', this.id]);
+      this.currentTime = NaN;
     },
     play: function() {
       this._worker.postMessage(['play_element', this.id]);
+      this._elem.mockPlayer.play();
     },
     cancel: function() {
       this._worker.postMessage(['cancel_element', this.id]);
+      this._elem.mockPlayer.cancel();
     },
     finish: function() {
       this._worker.postMessage(['finish_element', this.id]);
+      this._elem.mockPlayer.finish();
     },
     reverse: function() {
       this._worker.postMessage(['reverse_element', this.id]);
-    }
-  };
-
-  /** @constructor */
-  var Window = function(worker) {
-    this._worker = worker;
-    this.pendingRAFList = [];
-  };
-
-  Window.prototype = {
-    requestAnimationFrame: function(callback) {
-      this.pendingRAFList.push(callback);
+      this._elem.mockPlayer.reverse();
+    },
+    get currentTime() {
+      return this._elem.mockPlayer.currentTime;
+    },
+    set currentTime(val) {
+      this._elem.mockPlayer.currentTime = val;
     }
   };
 

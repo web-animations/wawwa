@@ -25,13 +25,4 @@ self.onmessage = function(e) {
   } else if (e.data === 'pause') {
     player.pause();
   }
-
-  // testing the tick value at both ends
-  function tick(t) {
-	console.log('worker1 at time ' + t);
-    window.requestAnimationFrame(tick);
-  }
-
-  window.requestAnimationFrame(tick);
-
 };
