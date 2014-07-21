@@ -26,11 +26,9 @@
   };
 
   Window.prototype = {
+    //requesting an animation frame happens here
     requestAnimationFrame: function(callback) {
       this.pendingRAFList.push(callback);
-    },
-    associate: function(anim, id) {
-      this.elementList[id].associate(anim);
     }
   };
 
@@ -75,11 +73,12 @@
       // implement actual animation here
       this._animationEffect = animEffect;
       this._timingInput = tInput;
-      window.elements[this.id] = this;
+
       // timing model
       this.mockAnim = new Animation(null, null, tInput);
       this.mockPlayer = self.document.timeline.play(this.mockAnim);
       this._worker.postMessage(['animate_element', this.id, animEffect, tInput]);
+      window.elements[this.id] = this;
       return new AnimationPlayer(this._id, this._worker, this);
     }
   };
@@ -111,6 +110,12 @@
     set elem(val) {
       this._elem = val;
     },
+    get currentTime() {
+      return this._elem.mockPlayer.currentTime;
+    },
+    set currentTime(val) {
+      this._elem.mockPlayer.currentTime = val;
+    },
     // the following functions moce to perform the action stated by their name
     pause: function() {
       this._elem.mockPlayer.pause();
@@ -133,12 +138,6 @@
       this._worker.postMessage(['reverse_element', this.id]);
       this._elem.mockPlayer.reverse();
     },
-    get currentTime() {
-      return this._elem.mockPlayer.currentTime;
-    },
-    set currentTime(val) {
-      this._elem.mockPlayer.currentTime = val;
-    }
   };
 
   self.AnimatableElement = AnimatableElement;

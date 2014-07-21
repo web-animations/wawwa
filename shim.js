@@ -18,14 +18,17 @@ var userOnMessageHandler = undefined;
 importScripts('web-animations-worker.js');
 
 self.onmessage = function(event) {
+  // rAF tick gets processed here
   if (event.data[0] === 'requestAnimationFrame') {
     var oldRAFs = window.pendingRAFList;
     window.pendingRAFList = [];
     oldRAFs.forEach(function(raf) {
       raf(event.data[1]);
     });
+    // the act of opening a file happens here
   } else if (event.data[0] === 'name') {
     importScripts(event.data[1]);
+    //the act of reporting the correct current time occurs here
   } else if (event.data[0] == 'report_time') {
     window.elements[event.data[2]].currentTime = parseFloat(event.data[1]);
   } else if (userOnMessageHandler !== undefined) {

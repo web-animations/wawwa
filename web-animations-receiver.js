@@ -53,12 +53,16 @@
         this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       } else if (val === 'reverse_element') {
         this.player.reverse();
+        this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       } else if (val === 'finish_element') {
         this.player.finish();
+        this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       } else if (val === 'cancel_element') {
         this.player.cancel();
+        this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       }
     },
+    // getters and setters
     set currentTime(val) {
       this.player.currentTime = val;
     },

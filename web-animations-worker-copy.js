@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+
+// has been adapted to make it usable by the Web Worker -
+// any reference to manipulating DOM elements has been removed
 (function() {
 'use strict';
 
@@ -5315,7 +5318,6 @@ Element.prototype = {
     return anim.player;
   }
 };
-
 self.Animation = Animation;
 self.AnimationEffect = AnimationEffect;
 self.AnimationGroup = AnimationGroup;
