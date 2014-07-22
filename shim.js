@@ -41,5 +41,5 @@ self.onmessage = function(event) {
 
 Object.defineProperty(self, 'onmessage', {
   get: function() { return userOnMessageHandler; },
-  set: function(f) { userOnMessageHandler = f; 
+  set: function(f) { userOnMessageHandler = f;
 }});
