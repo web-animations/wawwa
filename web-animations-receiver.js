@@ -31,6 +31,7 @@
       var anim = new Animation(elem, animEffect, timingDict);
     }
     this.elemID = elemID;
+    this.animEffect = animEffect;
     this.timingDict = timingDict;
     this.anim = anim;
     this.elem = elem;
@@ -41,7 +42,7 @@
 
   ProxyPlayer.prototype = {
     // in each case performs the action as dictated by the string passed to it
-    execute: function(val, setVal) {
+    execute: function(val) {
       if (val === 'animate_element') {
         if (this.player === null) {
           this.player = document.timeline.play(this.anim);

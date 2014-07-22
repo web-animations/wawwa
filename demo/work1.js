@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-var testobj = new AnimatableElement('#myCanvas2', self);
+var testobj = new AnimatableElement('myCanvas2', self);
 var player;
 
 self.onmessage = function(e) {
   // call animate on it
   var motion = [{left: '0px'}, {left: '300px'}];
   if (e.data === 'start') {
-    player = testobj.animate(motion, {duration: 2000, iterations: Infinity});
+    player = testobj.animate(motion, {duration: 2000, direction: 'alternate', iterations: Infinity});
   } else if (e.data === 'pause') {
     player.pause();
   }
