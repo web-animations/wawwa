@@ -18,14 +18,19 @@ var userOnMessageHandler = undefined;
 importScripts('web-animations-worker.js');
 
 self.onmessage = function(event) {
+  // Simulate rAF on the worker thread based on this event
   if (event.data[0] === 'requestAnimationFrame') {
     var oldRAFs = window.pendingRAFList;
     window.pendingRAFList = [];
     oldRAFs.forEach(function(raf) {
       raf(event.data[1]);
     });
+    // Open a script file in the worker
   } else if (event.data[0] === 'name') {
     importScripts(event.data[1]);
+    // Report currentTime back to the worker after committing a change on the main thread
+  } else if (event.data[0] == 'report_time') {
+    window.elements[event.data[2]].currentTime = parseFloat(event.data[1]);
   } else if (userOnMessageHandler !== undefined) {
     userOnMessageHandler(event);
   }

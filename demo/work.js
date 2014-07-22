@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-var testobj = new AnimatableElement('#myCanvas1', self);
+var testobj = new AnimatableElement('myCanvas1', self);
 var player;
 
 var motion = [{left: '0px'}, {left: '1000px'}];
 
 self.onmessage = function(e) {
   if (e.data === 'start') {
-    player = testobj.animate(motion, {duration: 2000, iterations: Infinity});
+    player = testobj.animate(motion, {duration: 2000, direction: 'alternate', iterations: Infinity});
   } else if (e.data === 'pause') {
     player.pause();
   }
-
-  // testing the tick value at both ends
-  function tick(t) {
-    console.log('worker at time ' + t);
-    window.requestAnimationFrame(tick);
-  }
-
-  window.requestAnimationFrame(tick);
 };
