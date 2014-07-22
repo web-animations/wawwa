@@ -29,6 +29,15 @@
     //requesting an animation frame happens here
     requestAnimationFrame: function(callback) {
       this.pendingRAFList.push(callback);
+    },
+    // setting the currentTime of the correct mockPlayer
+    currentTime: function (pos, val) {
+      window.elements[pos].currentTime = parseFloat(val);
+      console.log('w end current time is ' + window.elements[pos].currentTime + ' and start time is ' + window.elements[pos].startTime);
+    },
+    // setting the startTime of the correct mockPlayer
+    startTime: function (pos, val) {
+     window.elements[pos].startTime = parseFloat(val);
     }
   };
 
@@ -65,18 +74,21 @@
     clone: function() {
       return new AnimatableElement(this.id, this.worker);
     },
-
     // accepts an animationEffect dictionary as well as
     // a timingInput dictionary to create an animation
     // returns an instance of a proxy AnimationPlayer
     animate: function(animEffect, tInput) {
-      // implement actual animation here
+      // assign values
       this._animationEffect = animEffect;
       this._timingInput = tInput;
 
       // timing model
       this.mockAnim = new Animation(null, null, tInput);
       this.mockPlayer = self.document.timeline.play(this.mockAnim);
+      this.currentTime = 0;
+      this.startTime = NaN;
+
+      // implement actual animation here
       this._worker.postMessage(['animate_element', this.id, animEffect, tInput]);
       window.elements[this.id] = this;
       return new AnimationPlayer(this._id, this._worker, this);
@@ -116,6 +128,12 @@
     set currentTime(val) {
       this._elem.mockPlayer.currentTime = val;
     },
+    get startTime() {
+      return this._elem.mockPlayer.startTime;
+    },
+    set startTime(val) {
+      this._elem.mockPlayer.startTime = val;
+    },
     // the following functions moce to perform the action stated by their name
     pause: function() {
       this._elem.mockPlayer.pause();
@@ -125,6 +143,8 @@
     play: function() {
       this._worker.postMessage(['play_element', this.id]);
       this._elem.mockPlayer.play();
+      this.currentTime = 0;
+      this.startTime = NaN;
     },
     cancel: function() {
       this._worker.postMessage(['cancel_element', this.id]);
