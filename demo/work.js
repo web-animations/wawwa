@@ -21,7 +21,7 @@ var motion = [{left: '0px'}, {left: '1000px'}];
 
 self.onmessage = function(e) {
   if (e.data === 'start') {
-    player = testobj.animate(motion, {duration: 2000, direction: 'alternate', iterations: Infinity});
+    player = testobj.animate(motion, {duration: 2000, direction: 'alternate', iterations: 10});
   } else if (e.data === 'pause') {
     player.pause();
   }

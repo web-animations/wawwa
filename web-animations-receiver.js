@@ -49,19 +49,18 @@
         } else {
           this.player.play();
         }
+        this.worker.postMessage(['report_start_time', this.startTime, this.elemID]);
       } else if (val === 'pause_element') {
         this.player.pause();
-        this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       } else if (val === 'reverse_element') {
         this.player.reverse();
-        this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       } else if (val === 'finish_element') {
         this.player.finish();
-        this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       } else if (val === 'cancel_element') {
         this.player.cancel();
-        this.worker.postMessage(['report_time', this.currentTime, this.elemID]);
       }
+      this.worker.postMessage(['report_current_time', this.currentTime, this.elemID]);
+      console.log('m end current time is ' + this.currentTime + ' and start time is ' + this.startTime);
     },
     // getters and setters
     set currentTime(val) {
@@ -69,6 +68,12 @@
     },
     get currentTime() {
       return this.player.currentTime;
+    },
+    set startTime(val) {
+      this.player.startTime = val;
+    },
+    get startTime() {
+      return this.player.startTime;
     }
   };
 
