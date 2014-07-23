@@ -29,10 +29,10 @@ self.onmessage = function(event) {
   } else if (event.data[0] === 'name') {
     importScripts(event.data[1]);
     // Report currentTime back to the worker after committing a change on the main thread
-  } else if (event.data[0] == 'report_current_time') {
+  } else if (event.data[0] === 'report_current_time') {
     window.currentTime(event.data[2], event.data[1]);
     // Report startTime back to the worker after committing a change on the main thread
-  } else if (event.data[0] == 'report_start_time') {
+  } else if (event.data[0] === 'report_start_time') {
     window.startTime(event.data[2], event.data[1]);
   } else if (userOnMessageHandler !== undefined) {
     userOnMessageHandler(event);
@@ -41,5 +41,5 @@ self.onmessage = function(event) {
 
 Object.defineProperty(self, 'onmessage', {
   get: function() { return userOnMessageHandler; },
-  set: function(f) { userOnMessageHandler = f;
-}});
+  set: function(f) { userOnMessageHandler = f; }
+});
