@@ -60,7 +60,6 @@
         this.player.cancel();
       }
       this.worker.postMessage(['report_current_time', this.currentTime, this.elemID]);
-      console.log('m end current time is ' + this.currentTime + ' and start time is ' + this.startTime);
     },
     // getters and setters
     set currentTime(val) {
