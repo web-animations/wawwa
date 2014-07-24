@@ -33,7 +33,6 @@
     // setting the currentTime of the correct mockPlayer
     currentTime: function(pos, val) {
       window.elements[pos].currentTime = parseFloat(val);
-      console.log('w end current time is ' + window.elements[pos].currentTime + ' and start time is ' + window.elements[pos].startTime);
     },
     // setting the startTime of the correct mockPlayer
     startTime: function(pos, val) {
@@ -149,14 +148,17 @@
     cancel: function() {
       this._worker.postMessage(['cancel_element', this.id]);
       this._elem.mockPlayer.cancel();
+      this.currentTime = NaN;
     },
     finish: function() {
       this._worker.postMessage(['finish_element', this.id]);
       this._elem.mockPlayer.finish();
+      this.currentTime = NaN;
     },
     reverse: function() {
       this._worker.postMessage(['reverse_element', this.id]);
       this._elem.mockPlayer.reverse();
+      this.currentTime = NaN;
     }
   };
 
