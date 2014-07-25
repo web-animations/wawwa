@@ -58,6 +58,9 @@
         this.player.finish();
       } else if (val === 'cancel_element') {
         this.player.cancel();
+      } else if (val === 'play_element') {
+        this.player.play();
+        this.worker.postMessage(['report_start_time', this.startTime, this.elemID]);
       }
       this.worker.postMessage(['report_current_time', this.currentTime, this.elemID]);
     },
