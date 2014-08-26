@@ -90,18 +90,18 @@
       // implement actual animation here
       this._worker.postMessage(['animate_element', this.id, animEffect, tInput]);
       window.elements[this.id] = this;
-      return new AnimationPlayer(this._id, this._worker, this);
+      return new RemotePlayer(this._id, this._worker, this);
     }
   };
 
   /** @constructor */
-  var AnimationPlayer = function(id, worker, elem) {
+  var RemotePlayer = function(id, worker, elem) {
     this._id = id;
     this._worker = worker;
     this._elem = elem;
   };
 
-  AnimationPlayer.prototype = {
+  RemotePlayer.prototype = {
     // getters and setters
     get id() {
       return this._id;
@@ -163,7 +163,7 @@
   };
 
   self.AnimatableElement = AnimatableElement;
-  self.AnimationPlayer = AnimationPlayer;
+  self.RemotePlayer = RemotePlayer;
   self.window = new Window();
 
 })();
