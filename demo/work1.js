@@ -17,9 +17,9 @@
 var testobj = new AnimatableElement('myCanvas2', self);
 var player;
 
+var motion = [{left: '0px'}, {left: '500px'}];
+
 self.onmessage = function(e) {
-  // call animate on it
-  var motion = [{left: '0px'}, {left: '300px'}];
   if (e.data === 'start') {
     player = testobj.animate(motion, {duration: 2000, direction: 'alternate', iterations: Infinity});
   } else if (e.data === 'pause') {

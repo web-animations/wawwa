@@ -17,11 +17,11 @@
 var testobj = new AnimatableElement('myCanvas1', self);
 var player;
 
-var motion = [{left: '0px'}, {left: '1000px'}];
+var motion = [{left: '0px'}, {left: '500px'}];
 
 self.onmessage = function(e) {
   if (e.data === 'start') {
-    player = testobj.animate(motion, {duration: 2000, direction: 'alternate', iterations: 10});
+    player = testobj.animate(motion, {duration: 2000, direction: 'alternate', iterations: Infinity});
   } else if (e.data === 'pause') {
     player.pause();
   }
