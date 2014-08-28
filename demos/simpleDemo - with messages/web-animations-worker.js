@@ -32,10 +32,12 @@
     },
     // setting the currentTime of the correct mockPlayer
     currentTime: function(pos, val) {
+      console.log('Worker received the correct currentTime ' + val);
       window.elements[pos].currentTime = parseFloat(val);
     },
     // setting the startTime of the correct mockPlayer
     startTime: function(pos, val) {
+      console.log('Worker received the correct startTime ' + val);
      window.elements[pos].startTime = parseFloat(val);
     }
   };
@@ -90,7 +92,9 @@
       this.startTime = NaN;
 
       // implement actual animation here
-      this._worker.postMessage(['animate_element', this.id, this.count, animEffect, tInput]);
+      var msg = ['animate_element', this.id, this.count, animEffect, tInput];
+      console.log('\nWorker is sending message ' + msg);
+      this._worker.postMessage(msg);
       window.elements[this.id] = this;
       return new RemotePlayer(this._id, this._worker, this.count, this);
     }
@@ -139,27 +143,37 @@
     // the following functions moce to perform the action stated by their name
     pause: function() {
       this._elem.mockPlayer.pause();
-      this._worker.postMessage(['pause_element', this.id, this.count]);
+      var msg = ['pause_element', this.id, this.count];
+      console.log('\nWorker is sending message ' + msg);
+      this._worker.postMessage(msg);
       this.currentTime = NaN;
     },
     play: function() {
-      this._worker.postMessage(['play_element', this.id, this.count]);
+      var msg = ['play_element', this.id, this.count];
+      console.log('\nWorker is sending message ' + msg);
+      this._worker.postMessage(msg);
       this._elem.mockPlayer.play();
       this.currentTime = 0;
       this.startTime = NaN;
     },
     cancel: function() {
-      this._worker.postMessage(['cancel_element', this.id, this.count]);
+      var msg = ['cancel_element', this.id, this.count];
+      console.log('\nWorker is sending message ' + msg);
+      this._worker.postMessage();
       this._elem.mockPlayer.cancel();
       this.currentTime = NaN;
     },
     finish: function() {
-      this._worker.postMessage(['finish_element', this.id, this.count]);
+      var msg = ['finish_element', this.id, this.count];
+      console.log('\nWorker is sending message ' + msg);
+      this._worker.postMessage(msg);
       this._elem.mockPlayer.finish();
       this.currentTime = NaN;
     },
     reverse: function() {
-      this._worker.postMessage(['reverse_element', this.id, this.count]);
+      var msg = ['reverse_element', this.id, this.count];
+      console.log('\nWorker is sending message ' + msg);
+      this._worker.postMessage(msg);
       this._elem.mockPlayer.reverse();
       this.currentTime = NaN;
     }

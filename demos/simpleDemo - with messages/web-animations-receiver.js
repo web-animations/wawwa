@@ -48,6 +48,7 @@
         if (this.player === null) {
           this.player = document.timeline.play(this.anim);
         }
+        console.log('Main thread is reporting correct startTime ' + this.startTime); 
         this.worker.postMessage(['report_start_time', this.startTime, this.elemID]);
       } else if (val === 'pause_element') {
         this.player.pause();
@@ -59,8 +60,10 @@
         this.player.cancel();
       } else if (val === 'play_element') {
         this.player.play();
+        console.log('Main thread is reporting correct startTime ' + this.startTime); 
         this.worker.postMessage(['report_start_time', this.startTime, this.elemID]);
       }
+        console.log('Main thread is reporting correct currentTime ' + this.currentTime); 
       this.worker.postMessage(['report_current_time', this.currentTime, this.elemID]);
     },
     // getters and setters
@@ -121,6 +124,8 @@
     worker.postMessage(['name', name]);
 
     worker.onmessage = function(oEvent) {
+      console.log('Main thread received message ' + ' ' + oEvent.data[0] + ' ' + oEvent.data[1] + ' ' + oEvent.data[2] + ' ' + oEvent.data[3] + ' ' + oEvent.data[4]);
+      console.log('');
       elementList.execute(oEvent.data, worker);
     };
     return worker;

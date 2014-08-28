@@ -1,0 +1,41 @@
+* {
+    margin:0;
+    padding:0;
+}
+body {
+    background-color:white;
+    padding:10px;
+    font:normal normal 16px/1.4 Times, Serif;
+    color:black;
+}
+#everything {
+    position: relative;
+    height: 300px;
+}
+#scroll-area {
+    height:450px;
+    position: relative;
+    overflow: hidden;
+}
+#scroll-area #scroll-content {
+    padding:10px 24px 10px 14px;
+    border-bottom:1px solid red;
+    
+}
+#scrollbar-track {
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0px;
+    width:10px;
+    background-color: gray;
+}
+#scrollbar-thumb {
+    cursor:pointer;
+    position:absolute;
+    top:0;
+    left:0;
+    width:10px;
+    height:34px;
+    background-color:purple;
+}
